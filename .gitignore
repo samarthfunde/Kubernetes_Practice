@@ -1,0 +1,18 @@
+# OS / system
+.local/
+.cache/
+var/
+tmp/
+
+# Containers
+containers/
+overlay/
+storage/
+
+# Package managers
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
