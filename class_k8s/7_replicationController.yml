@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+    name: mynewrc
+spec:
+    replicas: 3
+    template:
+     metadata: 
+      labels:
+       env: prod
+     spec:
+       containers:
+         - image: nginx
+           name: mynginx
+           ports: 
+           - containerPort: 80

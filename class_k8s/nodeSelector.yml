@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: newpod
+  labels:
+    env: live
+spec:
+  nodeSelector:
+    gpu: "true"
+  containers:
+    - name: mynginx
+      image: nginx
+      ports:
+        - containerPort: 80
+

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mydbpod
+spec:
+  containers:
+    - image: mysql
+      ports:
+       - containerPort: 3306
+      name: mysqlcont
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "Pass@123"
+        - name: MYSQL_DATABASE
+          value: "mydb"

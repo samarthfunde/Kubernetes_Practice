@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minute-backup
+  namespace: nginxnamespace
+
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: minute-backup
+          labels:
+            app: minute-backup
+
+        spec:
+          containers:
+            - name: backup-container
+              image: busybox
+              command:
+                - sh
+                - -c
+                - >
+                  echo "Backup Started" ;
+                  mkdir -p /backups &&
+                  mkdir -p /demo-data &&
+                  cp -r /demo-data /backups &&
+                  echo "Backup Completed" ;
+              volumeMounts: #Pod च्या container मध्ये कोणते volumes कुठे mount करायचे ते सांगते.
+                - name: data-volume
+                  mountPath: /demo-data
+                - name: backup-volume
+                  mountPath: /backups
+
+          restartPolicy: OnFailure # when pod fail so container data should be backup
+
+          volumes:
+            - name: data-volume
+              hostPath:
+                path: /demo-data
+                type: DirectoryOrCreate #agr demo-data dir nhi mili cluster pe to create hogi
+            - name: backup-volume
+              hostPath:
+                path: /backups
+                type: DirectoryOrCreate

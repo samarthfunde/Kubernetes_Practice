@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: mydeploy
+spec:
+   replicas: 3
+   selector: 
+      matchLabels:
+            env: test
+   template:
+      metadata:
+         labels:
+            env: test
+      spec:
+          containers:
+              - image: nginx
+                name: mycont
+                ports:
+                 -  containerPort: 80
+                volumeMounts:
+                    - name: mynfsvolume
+                      mountPath: /usr/share/nginx/html
+          volumes:
+             - name: mynfsvolume
+               nfs:
+                  server: fs-08cf1f19081566cbe.efs.ap-south-1.amazonaws.com
+                  path: /mynfsvolume           

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+   name: myrc
+spec:
+   replicas: 3
+   template:
+      metadata:
+         labels:
+            app: web
+      spec:
+        containers:
+          - image: nginx
+            name: mynginx
+            ports:
+              - containerPort: 80
+            livenessProbe:
+              httpGet:
+                path: index.html
+                port: 80
+              initialDelaySeconds: 10
+              timeoutSeconds: 10
+              periodSeconds: 20
+              successThreshold: 1
+              failureThreshold: 5
+            readinessProbe:
+              httpGet:
+                path: index.html
+                port: 80
+              initialDelaySeconds: 10
+              timeoutSeconds: 10
+              periodSeconds: 20
+              successThreshold: 1
+              failureThreshold: 5
+            startupProbe:
+              exec:
+               command:
+                 - touch hello.txt
+              periodSeconds: 5
+              failureThreshold: 24
+              initialDelaySeconds: 5
+
+
